@@ -4,15 +4,31 @@
 
 <div class="panel">
 <div v-if="current">
-  <div v-if="current.type=='button'">
-    <a-input v-model:value="current.props.text"></a-input>
+  <h3>属性面板</h3>
+  <a-divider></a-divider>
+  <div class="form-item">
+    <span>Padding</span>
+    <a-input v-model:value="current.style.padding"></a-input>
   </div>
-  <div v-if="current.type=='input'">
-    <a-input v-model:value="current.props.placeholder"/>
-  </div>
-  <div v-else>
-    <p>请选择组件</p>
-  </div>
+  <div class="form-item">
+        <span>Margin</span>
+        <a-input v-model:value="current.style.margin" />
+      </div>
+
+      <div class="form-item">
+        <span>Border</span>
+        <a-input v-model:value="current.style.border" />
+      </div>
+
+      <div class="form-item">
+        <span>Border Radius</span>
+        <a-input v-model:value="current.style.borderRadius" />
+      </div>
+
+      <div class="form-item">
+        <span>Background</span>
+        <a-input v-model:value="current.style.backgroundColor" />
+      </div>
 </div>
 </div>
 
@@ -29,6 +45,13 @@ const current=computed(()=>{
 
 <style scoped>
 .panel{
-  padding:12px
+  padding:16px
+}
+.form-item{
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
 }
 </style>

@@ -2,57 +2,50 @@
  <template>
 
 <div class="canvas">
-
-  <div
-      v-for="item in store.components"
-      :key="item.id"
-      class="node"
-      :class="{ active: store.selectedId === item.id }"
-      @click="select(item.id)"
+  <draggable v-model="store.components" item-key="id">
+    <template #item="{element}">
+      <div
+        
+        class="node"
+        :class="{ active: store.selectedId === element.id }"
+        :style="element.style"
+      @click="select(element.id)"
     >
-  <component :is="resolveComponent(item)"/>
-</div>
-
+      <component :is="registry[element.type]" v-bind="element.props"/>
+    </div>
+    </template>
+  </draggable>
 </div>
 
  </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable';
 import {store} from '../store';
+import {registry} from '@/renderer/registry';
+
+
 const select=(id:string)=>{
   store.selectedId=id; // 设置选中组件的id
 }
 
-const resolveComponent=(item:any)=>{
- if(item.type=='button'){
-  return {
-    template:`<a-button block>{{text}}</a-button>`,
-    setup(){
-      return {text:item.props.text}
-    }
- }
-}
-if(item.type=='input'){
-  return {
-    template:`<a-input :placeholder="placeholder"/>`,
-    setup(){
-      return {placeholder:item.props.placeholder}
-    }
- }
-}}
+
 </script>
 
 <style scoped>
 .canvas {
-  min-height: 600px;
-  border: 1px dashed #ccc;
-  padding: 12px;
+  min-height: 100vh;
+
+  padding: 20px;
+
+  background: #f5f5f5;
 }
+
 .node {
-  margin-bottom: 10px;
-  padding: 4px;
+  transition: all .2s;
 }
+
 .active {
-  outline: 2px solid #1890ff;
+  outline: 2px solid #1677ff;
 }
 </style>
