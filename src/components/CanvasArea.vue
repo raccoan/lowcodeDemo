@@ -1,51 +1,49 @@
-<!-- 中间画板 -->
- <template>
+<template>
 
-<div class="canvas">
-  <draggable v-model="store.components" item-key="id">
-    <template #item="{element}">
-      <div
-        
-        class="node"
-        :class="{ active: store.selectedId === element.id }"
-        :style="element.style"
-      @click="select(element.id)"
-    >
-      <component :is="registry[element.type]" v-bind="element.props"/>
-    </div>
-    </template>
-  </draggable>
-</div>
+  <div
+    class="canvas"
+    @click="clearSelected"
+  >
 
- </template>
+    <RenderItem
+      v-for="item in editorStore.components"
+      :key="item.id"
+      :item="item"
+    />
+
+  </div>
+
+</template>
 
 <script setup lang="ts">
-import draggable from 'vuedraggable';
-import {store} from '../store';
-import {registry} from '@/renderer/registry';
 
+import {
+  useEditorStore
+} from '../store/editor'
 
-const select=(id:string)=>{
-  store.selectedId=id; // 设置选中组件的id
+import RenderItem from './RenderItem.vue'
+
+const editorStore =
+  useEditorStore()
+
+const clearSelected = () => {
+
+  editorStore.clearSelected()
+
 }
-
 
 </script>
 
 <style scoped>
+
 .canvas {
+
   min-height: 100vh;
 
-  padding: 20px;
+  padding: 24px;
 
-  background: #f5f5f5;
+  background: #f0f2f5;
+
 }
 
-.node {
-  transition: all .2s;
-}
-
-.active {
-  outline: 2px solid #1677ff;
-}
 </style>

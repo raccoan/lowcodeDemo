@@ -25,9 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import MaterialPanel from './components/MaterialPanel.vue'
 
-import CanvasArea from './components/CanvasArea.vue'
+import MaterialPanel
+from './components/MaterialPanel.vue'
 
-import PropsPanel from './components/PropsPanel.vue'
+import CanvasArea
+from './components/CanvasArea.vue'
+
+import PropsPanel
+from './components/PropsPanel.vue'
+
 </script>
