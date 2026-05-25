@@ -1,5 +1,5 @@
 /**
- * 所有组件类型
+ * 组件类型
  */
 export type ComponentType =
   | 'button'
@@ -10,9 +10,7 @@ export type ComponentType =
 /**
  * 组件样式
  */
-
-import type { CSSProperties } from 'vue'
- 
+import type {CSSProperties} from 'vue'
 export interface ComponentStyle extends CSSProperties {
 
   width?: string
@@ -29,13 +27,12 @@ export interface ComponentStyle extends CSSProperties {
 
   backgroundColor?: string
 
+  minHeight?: string
+
 }
 
 /**
- * 低代码组件 schema
- *
- * 真正的低代码平台本质：
- * 页面 = JSON Tree
+ * 页面 schema
  */
 export interface ComponentSchema {
 
@@ -50,12 +47,12 @@ export interface ComponentSchema {
   type: ComponentType
 
   /**
-   * 组件属性
+   * 属性
    */
   props: Record<string, any>
 
   /**
-   * 组件样式
+   * 样式
    */
   style: ComponentStyle
 

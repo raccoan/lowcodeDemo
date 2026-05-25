@@ -9,13 +9,33 @@
     @click.stop="select"
   >
 
-    <!-- 递归渲染 children -->
+    <!-- children sortable -->
 
-    <RenderItem
-      v-for="child in item.children"
-      :key="child.id"
-      :item="child"
-    />
+    <draggable
+
+      v-model="item.children"
+
+      item-key="id"
+
+      group="components"
+
+      class="drag-area"
+
+      @dragover.prevent
+
+      @drop="onDrop"
+
+    >
+
+      <template #item="{ element }">
+
+        <RenderItem
+          :item="element"
+        />
+
+      </template>
+
+    </draggable>
 
   </div>
 
@@ -28,13 +48,31 @@
     @click.stop="select"
   >
 
-    <!-- children -->
+    <draggable
 
-    <RenderItem
-      v-for="child in item.children"
-      :key="child.id"
-      :item="child"
-    />
+      v-model="item.children"
+
+      item-key="id"
+
+      group="components"
+
+      class="drag-area"
+
+      @dragover.prevent
+
+      @drop="onDrop"
+
+    >
+
+      <template #item="{ element }">
+
+        <RenderItem
+          :item="element"
+        />
+
+      </template>
+
+    </draggable>
 
   </div>
 
@@ -58,6 +96,9 @@
 
 <script setup lang="ts">
 
+import draggable
+from 'vuedraggable'
+
 import type {
   ComponentSchema
 } from '../schema/components'
@@ -69,6 +110,10 @@ import {
 import {
   registry
 } from '../renderer/registry'
+
+import {
+  createComponent
+} from '../utils/createComponent'
 
 defineOptions({
   name: 'RenderItem'
@@ -84,10 +129,45 @@ const props =
 const editorStore =
   useEditorStore()
 
+/**
+ * 选中组件
+ */
 const select = () => {
 
   editorStore.selectComponent(
     props.item.id
+  )
+
+}
+
+/**
+ * 接收左侧拖入
+ */
+const onDrop = (
+  e: DragEvent
+) => {
+
+  const type =
+    e.dataTransfer?.getData(
+      'componentType'
+    )
+
+  /**
+   * 如果不是左侧拖入
+   * 直接结束
+   */
+  if (!type) return
+
+  /**
+   * 没 children
+   * 说明不是容器
+   */
+  if (!props.item.children) return
+
+  props.item.children.push(
+
+    createComponent(type as any)
+
   )
 
 }
@@ -107,6 +187,14 @@ const select = () => {
 .col {
 
   flex: 1;
+
+}
+
+.drag-area {
+
+  width: 100%;
+
+  min-height: 120px;
 
 }
 
