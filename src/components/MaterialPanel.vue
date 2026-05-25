@@ -2,45 +2,15 @@
 
   <div class="panel">
 
-    <!-- Button -->
-
     <div
+      v-for="item in materials"
+      :key="item.type"
       class="material-item"
       draggable="true"
-      @dragstart="
-        onDragStart('button')
-      "
+      @dragstart="onDragStart(item)"
     >
 
-      Button
-
-    </div>
-
-    <!-- Input -->
-
-    <div
-      class="material-item"
-      draggable="true"
-      @dragstart="
-        onDragStart('input')
-      "
-    >
-
-      Input
-
-    </div>
-
-    <!-- Row -->
-
-    <div
-      class="material-item"
-      draggable="true"
-      @dragstart="
-        onDragStart('row')
-      "
-    >
-
-      Row
+      {{ item.label }}
 
     </div>
 
@@ -51,18 +21,40 @@
 <script setup lang="ts">
 
 /**
- * 拖拽开始
- *
- * 往 dataTransfer
- * 存入组件类型
+ * 左侧组件库
+ */
+const materials = [
+
+  {
+    type:'button',
+    label:'Button'
+  },
+
+  {
+    type:'input',
+    label:'Input'
+  },
+
+  {
+    type:'row',
+    label:'Row'
+  }
+
+]
+
+/**
+ * 开始拖拽
  */
 const onDragStart = (
-  type: string
+  item:any
 ) => {
 
-  event?.dataTransfer?.setData(
-    'componentType',
-    type
+  /**
+   * 保存当前拖拽组件类型
+   */
+  localStorage.setItem(
+    'drag-component',
+    item.type
   )
 
 }
@@ -73,37 +65,39 @@ const onDragStart = (
 
 .panel {
 
-  height: 100%;
+  height:100%;
 
-  background: #141414;
+  padding:16px;
 
-  color: white;
-
-  padding: 16px;
+  box-sizing:border-box;
 
 }
 
 .material-item {
 
-  background: #262626;
+  background:#262626;
 
-  border: 1px solid #434343;
+  border:1px solid #434343;
 
-  padding: 12px;
+  color:white;
 
-  border-radius: 8px;
+  padding:12px;
 
-  cursor: grab;
+  border-radius:8px;
 
-  margin-bottom: 12px;
+  cursor:grab;
 
-  transition: all .2s;
+  transition:all .2s;
+
+  user-select:none;
+
+  margin-bottom:12px;
 
 }
 
 .material-item:hover {
 
-  background: #1677ff;
+  background:#1677ff;
 
 }
 

@@ -1,94 +1,85 @@
 <template>
 
-  <!-- Row -->
-
   <div
-    v-if="item.type === 'row'"
-    class="row"
-    :style="item.style"
+    class="render-item"
+
     @click.stop="select"
   >
 
-    <!-- children sortable -->
+    <!-- Row -->
 
-    <draggable
-
-      v-model="item.children"
-
-      item-key="id"
-
-      group="components"
-
-      class="drag-area"
-
-      @dragover.prevent
-
-      @drop="onDrop"
-
+    <div
+      v-if="item.type === 'row'"
+      class="row"
+      :style="item.style"
     >
 
-      <template #item="{ element }">
+      <!-- Row children -->
+
+      <div
+
+        class="drop-area"
+
+        @dragover.prevent
+
+        @drop.stop="onDrop"
+      >
 
         <RenderItem
-          :item="element"
+          v-for="child in children"
+          :key="child.id"
+          :item="child"
         />
 
-      </template>
+      </div>
 
-    </draggable>
+    </div>
 
-  </div>
+    <!-- Col -->
 
-  <!-- Col -->
-
-  <div
-    v-else-if="item.type === 'col'"
-    class="col"
-    :style="item.style"
-    @click.stop="select"
-  >
-
-    <draggable
-
-      v-model="item.children"
-
-      item-key="id"
-
-      group="components"
-
-      class="drag-area"
-
-      @dragover.prevent
-
-      @drop="onDrop"
-
+    <div
+      v-else-if="
+        item.type === 'col'
+      "
+      class="col"
+      :style="item.style"
     >
 
-      <template #item="{ element }">
+      <div
+
+        class="drop-area"
+
+        @dragover.prevent
+
+        @drop.stop="onDrop"
+      >
 
         <RenderItem
-          :item="element"
+          v-for="child in children"
+          :key="child.id"
+          :item="child"
         />
 
-      </template>
+      </div>
 
-    </draggable>
+    </div>
 
-  </div>
+    <!-- 普通组件 -->
 
-  <!-- 普通组件 -->
+    <div
+      v-else
+      class="node"
+      :style="item.style"
+    >
 
-  <div
-    v-else
-    class="node"
-    :style="item.style"
-    @click.stop="select"
-  >
+      <component
+        :is="
+          registry[item.type]
+        "
+        v-bind="item.props"
+      />
 
-    <component
-      :is="registry[item.type]"
-      v-bind="item.props"
-    />
+    </div>
 
   </div>
 
@@ -96,8 +87,7 @@
 
 <script setup lang="ts">
 
-import draggable
-from 'vuedraggable'
+import { computed } from 'vue'
 
 import type {
   ComponentSchema
@@ -116,13 +106,13 @@ import {
 } from '../utils/createComponent'
 
 defineOptions({
-  name: 'RenderItem'
+  name:'RenderItem'
 })
 
 const props =
   defineProps<{
 
-    item: ComponentSchema
+    item:ComponentSchema
 
   }>()
 
@@ -141,33 +131,51 @@ const select = () => {
 }
 
 /**
- * 接收左侧拖入
+ * children
  */
-const onDrop = (
-  e: DragEvent
-) => {
+const children = computed({
+
+  get() {
+
+    return props.item.children || []
+
+  },
+
+  set(value) {
+
+    props.item.children = value
+
+  }
+
+})
+
+/**
+ * 子容器 drop
+ */
+const onDrop = () => {
 
   const type =
-    e.dataTransfer?.getData(
-      'componentType'
+    localStorage.getItem(
+      'drag-component'
     )
 
-  /**
-   * 如果不是左侧拖入
-   * 直接结束
-   */
-  if (!type) return
+  if (!type) {
+
+    return
+
+  }
 
   /**
-   * 没 children
-   * 说明不是容器
+   * 创建组件
    */
-  if (!props.item.children) return
-
-  props.item.children.push(
-
+  const component =
     createComponent(type as any)
 
+  /**
+   * 加入 children
+   */
+  children.value.push(
+    component
   )
 
 }
@@ -176,31 +184,49 @@ const onDrop = (
 
 <style scoped>
 
+.render-item {
+
+  margin-bottom:12px;
+
+}
+
+/**
+ * Row
+ */
 .row {
 
-  display: flex;
+  display:flex;
 
-  gap: 12px;
+  gap:12px;
 
 }
 
+/**
+ * Col
+ */
 .col {
 
-  flex: 1;
+  flex:1;
 
 }
 
-.drag-area {
+/**
+ * drop 区域
+ */
+.drop-area {
 
-  width: 100%;
+  width:100%;
 
-  min-height: 120px;
+  min-height:120px;
 
 }
 
+/**
+ * 普通组件
+ */
 .node {
 
-  transition: all .2s;
+  transition:all .2s;
 
 }
 

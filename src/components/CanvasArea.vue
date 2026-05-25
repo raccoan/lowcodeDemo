@@ -2,30 +2,21 @@
 
   <div
     class="canvas"
+
     @click="clearSelected"
+
     @dragover.prevent
+
     @drop="onDrop"
   >
 
-    <!-- 根级 sortable -->
+    <!-- 页面组件 -->
 
-    <draggable
-      v-model="
-        editorStore.components
-      "
-      item-key="id"
-      group="components"
-    >
-
-      <template #item="{ element }">
-
-        <RenderItem
-          :item="element"
-        />
-
-      </template>
-
-    </draggable>
+    <RenderItem
+      v-for="item in editorStore.components"
+      :key="item.id"
+      :item="item"
+    />
 
   </div>
 
@@ -33,15 +24,12 @@
 
 <script setup lang="ts">
 
-import draggable
-from 'vuedraggable'
+import RenderItem
+from './RenderItem.vue'
 
 import {
   useEditorStore
 } from '../store/editor'
-
-import RenderItem
-from './RenderItem.vue'
 
 import {
   createComponent
@@ -51,7 +39,7 @@ const editorStore =
   useEditorStore()
 
 /**
- * 清空选中
+ * 清除选中
  */
 const clearSelected = () => {
 
@@ -60,22 +48,33 @@ const clearSelected = () => {
 }
 
 /**
- * 接收左侧拖拽
+ * 根画布 drop
  */
-const onDrop = (
-  e: DragEvent
-) => {
+const onDrop = () => {
 
+  /**
+   * 获取拖拽组件类型
+   */
   const type =
-    e.dataTransfer?.getData(
-      'componentType'
+    localStorage.getItem(
+      'drag-component'
     )
 
-  if (!type) return
+  if (!type) {
 
+    return
+
+  }
+
+  /**
+   * 创建组件
+   */
   const component =
     createComponent(type as any)
 
+  /**
+   * 加入页面
+   */
   editorStore.components.push(
     component
   )
@@ -88,11 +87,11 @@ const onDrop = (
 
 .canvas {
 
-  min-height: 100vh;
+  min-height:100vh;
 
-  padding: 24px;
+  padding:24px;
 
-  background: #f0f2f5;
+  background:#f0f2f5;
 
 }
 

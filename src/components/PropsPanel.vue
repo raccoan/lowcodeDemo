@@ -12,6 +12,8 @@
 
       <a-divider />
 
+      <!-- Padding -->
+
       <div class="form-item">
 
         <span>Padding</span>
@@ -23,6 +25,8 @@
         />
 
       </div>
+
+      <!-- Margin -->
 
       <div class="form-item">
 
@@ -36,6 +40,8 @@
 
       </div>
 
+      <!-- Border -->
+
       <div class="form-item">
 
         <span>Border</span>
@@ -47,6 +53,22 @@
         />
 
       </div>
+
+      <!-- Radius -->
+
+      <div class="form-item">
+
+        <span>Border Radius</span>
+
+        <a-input
+          v-model:value="
+            current.style.borderRadius
+          "
+        />
+
+      </div>
+
+      <!-- Background -->
 
       <div class="form-item">
 
