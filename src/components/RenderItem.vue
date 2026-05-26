@@ -11,7 +11,7 @@
       v-bind="item.props"
       :style="item.style"
     />
-    <component
+    <component class="node"
       v-else
       :is="registry[item.type]"
       v-bind="item.props"
@@ -36,10 +36,21 @@ const select = () => {
 </script>
 
 <style scoped>
+
 .render-item {
   margin-bottom: 12px;
 }
 .render-item.active {
   outline: 2px solid #1677ff;
+}
+.node{
+  
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.node > * {
+  width: 100%;
 }
 </style>

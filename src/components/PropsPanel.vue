@@ -29,15 +29,15 @@
       <h2 class="title">样式</h2>
       <div class="form-item">
         <span>Padding</span>
-        <a-input v-model:value="currentComponent.style.padding" />
+        <a-input v-model:value="currentComponent.style?.padding" />
       </div>
       <div class="form-item">
         <span>Margin</span>
-        <a-input v-model:value="currentComponent.style.margin" />
+        <a-input v-model:value="currentComponent.style?.margin" />
       </div>
       <div class="form-item">
         <span>Border Radius</span>
-        <a-input v-model:value="currentComponent.style.borderRadius" />
+        <a-input v-model:value="currentComponent.style?.borderRadius" />
       </div>
     </div>
     <div v-else class="empty-panel">未选中组件</div>

@@ -10,7 +10,7 @@ export function createComponent(type: ComponentType): ComponentSchema {
         id,
         type: 'button',
         props: { text: '按钮', type: 'default', danger: false, disabled: false },
-        style: { padding: '8px 16px' },
+        style: { padding: '4px 8px', },
         children: []
       }
     case 'input':
