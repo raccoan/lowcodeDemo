@@ -3,9 +3,8 @@
     class="canvas"
     @click="clearSelected"
     @dragover.prevent
-    @drop="onDrop"
+    @drop="onRootDrop"
   >
-    <!-- 使用 draggable 实现根组件排序 -->
     <draggable
       v-model="editorStore.components"
       item-key="id"
@@ -33,20 +32,14 @@ const clearSelected = () => {
   editorStore.clearSelected()
 }
 
-/**
- * 根画布 drop（从物料库添加新组件）
- */
-const onDrop = (e: DragEvent) => {
+const onRootDrop = (e: DragEvent) => {
   const type = localStorage.getItem('drag-component')
   if (!type) return
-  localStorage.removeItem('drag-component') // 可选：清除
+  localStorage.removeItem('drag-component')
   const component = createComponent(type as any)
   editorStore.components.push(component)
 }
 
-/**
- * draggable 内部的 drop 事件（防止冒泡导致重复添加）
- */
 const onDraggableDrop = (e: DragEvent) => {
   e.stopPropagation()
 }
