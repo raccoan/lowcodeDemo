@@ -38,8 +38,9 @@ const materials = [
   {
     type:'row',
     label:'Row'
-  }
+  },
 
+ 
 ]
 
 /**
@@ -53,9 +54,8 @@ const onDragStart = (
    * 保存当前拖拽组件类型
    */
   localStorage.setItem(
-    'drag-component',
-    item.type
-  )
+    'drag-component',item.type)
+  console.log('dragstart type:', item.type)
 
 }
 

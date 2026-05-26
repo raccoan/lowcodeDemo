@@ -55,11 +55,13 @@ const onDrop = (e: DragEvent) => {
 }
 .row-drag-area {
   display: flex;
-  flex-direction: row;
+  flex-direction: row;   /* 确保横向 */
   gap: 12px;
   min-height: 120px;
 }
+/* 每个子项（即 Col）等宽 */
 .row-drag-area > * {
   flex: 1;
+  min-width: 0;          /* 防止溢出 */
 }
 </style>

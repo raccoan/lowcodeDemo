@@ -26,11 +26,19 @@ export function createComponent(type: ComponentType): ComponentSchema {
         id,
         type: 'row',
         props: {},
-        style: { padding: '12px', border: '1px dashed #ccc', backgroundColor: '#fafafa' },
+        style: {
+          display: 'flex',
+          flexDirection: 'row',   // 强制横向
+          gap: '12px',
+          padding: '12px',
+          border: '1px dashed #ccc',
+          backgroundColor: '#fafafa',
+          minHeight: '120px'      // 确保容器可见
+        },
         children: [
           createComponent('col'),
           createComponent('col'),
-          createComponent('col')   // 三列
+          createComponent('col')
         ]
       }
     case 'col':

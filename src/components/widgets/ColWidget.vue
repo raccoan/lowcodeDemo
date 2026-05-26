@@ -56,7 +56,9 @@ const onDrop = (e: DragEvent) => {
 }
 .col-drag-area {
   min-height: 100px;
-  background: #fff;
+  background: #ffffff;
+  border: 1px solid #ddd;
   border-radius: 6px;
+  padding: 8px;
 }
 </style>
