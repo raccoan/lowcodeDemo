@@ -1,10 +1,9 @@
 <template>
-  <!-- 外层 div 负责接收 drop -->
-  <div :style="style" class="row-widget" @dragover.prevent @drop="onDrop">
+  <div class="row-widget" @dragover.prevent @drop="onDrop">
     <draggable
       v-model="localChildren"
       item-key="id"
-      :group="{ name: 'components', pull: false, put: false }"
+      :group="{ name: 'components', pull: true, put: true }"
       class="row-drag-area"
     >
       <template #item="{ element }">
@@ -42,7 +41,6 @@ const onDrop = (e: DragEvent) => {
   e.stopPropagation()
   e.preventDefault()
   const type = localStorage.getItem('drag-component')
-  console.log('Row onDrop, type:', type)   // 确认触发
   if (!type) return
   localStorage.removeItem('drag-component')
   const component = createComponent(type as any)
@@ -56,7 +54,12 @@ const onDrop = (e: DragEvent) => {
   width: 100%;
 }
 .row-drag-area {
-  min-height: 80px;
-  background: #fafafa;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  min-height: 120px;
+}
+.row-drag-area > * {
+  flex: 1;
 }
 </style>

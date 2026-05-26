@@ -1,12 +1,10 @@
 <template>
-  <div :style="style" class="col-widget">
+  <div class="col-widget" @dragover.prevent @drop="onDrop">
     <draggable
       v-model="localChildren"
       item-key="id"
-      :group="{ name: 'components', pull: false, put: true }"
+      :group="{ name: 'components', pull: true, put: true }"
       class="col-drag-area"
-      @dragover.prevent
-      @drop="onDrop"
     >
       <template #item="{ element }">
         <RenderItem :item="element" />
@@ -54,10 +52,11 @@ const onDrop = (e: DragEvent) => {
 <style scoped>
 .col-widget {
   width: 100%;
+  height: 100%;
 }
 .col-drag-area {
-  min-height: 80px;
-  background: #fafafa;
-  transition: all 0.2s;
+  min-height: 100px;
+  background: #fff;
+  border-radius: 6px;
 }
 </style>

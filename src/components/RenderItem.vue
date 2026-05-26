@@ -4,7 +4,6 @@
     :class="{ active: editorStore.selectedId === item.id }"
     @click.stop="select"
   >
-    <!-- 容器组件：使用 v-model:children 传递 children -->
     <component
       :is="registry[item.type]"
       v-if="item.type === 'row' || item.type === 'col'"
@@ -12,7 +11,6 @@
       v-bind="item.props"
       :style="item.style"
     />
-    <!-- 基础组件：不传递 children -->
     <component
       v-else
       :is="registry[item.type]"

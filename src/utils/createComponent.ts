@@ -26,11 +26,11 @@ export function createComponent(type: ComponentType): ComponentSchema {
         id,
         type: 'row',
         props: {},
-        style: { display: 'flex', gap: '12px', padding: '12px', border: '1px dashed #ccc', backgroundColor: '#fafafa' },
+        style: { padding: '12px', border: '1px dashed #ccc', backgroundColor: '#fafafa' },
         children: [
-          createComponent('col'),  // 默认第一个列
-          createComponent('col'),  // 默认第二个列
-          createComponent('col'),  // 默认第三个列
+          createComponent('col'),
+          createComponent('col'),
+          createComponent('col')   // 三列
         ]
       }
     case 'col':
@@ -38,10 +38,18 @@ export function createComponent(type: ComponentType): ComponentSchema {
         id,
         type: 'col',
         props: {},
-        style: { flex: 1, minWidth: '100px', minHeight: '80px', padding: '8px', border: '1px dashed #1677ff', backgroundColor: '#fff' },
+        style: {
+          flex: 1,
+          minWidth: '100px',
+          minHeight: '100px',
+          padding: '8px',
+          border: '1px solid #ddd',
+          borderRadius: '6px',
+          backgroundColor: '#fff'
+        },
         children: []
       }
     default:
-      throw new Error(`Unknown component type: ${type}`)
+      throw new Error(`Unknown type: ${type}`)
   }
 }
