@@ -4,9 +4,18 @@
     :class="{ active: editorStore.selectedId === item.id }"
     @click.stop="select"
   >
+    <!-- 容器组件：使用 v-model:children 传递 children -->
     <component
       :is="registry[item.type]"
+      v-if="item.type === 'row' || item.type === 'col'"
       v-model:children="item.children"
+      v-bind="item.props"
+      :style="item.style"
+    />
+    <!-- 基础组件：不传递 children -->
+    <component
+      v-else
+      :is="registry[item.type]"
       v-bind="item.props"
       :style="item.style"
     />
@@ -31,7 +40,6 @@ const select = () => {
 <style scoped>
 .render-item {
   margin-bottom: 12px;
-  transition: all 0.2s;
 }
 .render-item.active {
   outline: 2px solid #1677ff;

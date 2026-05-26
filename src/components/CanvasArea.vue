@@ -25,6 +25,7 @@ import draggable from 'vuedraggable'
 import RenderItem from './RenderItem.vue'
 import { useEditorStore } from '../store/editor'
 import { createComponent } from '../utils/createComponent'
+import type { ComponentType } from '../schema/components'
 
 const editorStore = useEditorStore()
 
@@ -36,7 +37,7 @@ const onRootDrop = (e: DragEvent) => {
   const type = localStorage.getItem('drag-component')
   if (!type) return
   localStorage.removeItem('drag-component')
-  const component = createComponent(type as any)
+  const component = createComponent(type as ComponentType)
   editorStore.components.push(component)
 }
 
