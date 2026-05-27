@@ -89,10 +89,10 @@ watch(selectedKeys, (newKeys) => {
   color: #e0e0e0;
 }
 :deep(.ant-tree .ant-tree-node-content-wrapper:hover) {
-  background-color: #333;
+  background-color: #30cdcd;
 }
 :deep(.ant-tree .ant-tree-node-selected) {
-  background-color: #1677ff;
+  background-color: #30cdcd;
   color: #fff;
 }
 :deep(.ant-tree .ant-tree-switcher) {

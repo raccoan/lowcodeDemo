@@ -92,15 +92,18 @@ const propsEditors = computed(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #1f1f1f;
+  background: #413f3f;
   color: white;
   overflow: hidden;
 }
+
 
 .breadcrumb-wrapper {
   background: #2a2a2a;
   border-bottom: 1px solid #333;
   padding: 8px 12px;
+  
+  border-radius: 0 0 8px 8px;
 }
 
 .panel-tabs {
@@ -110,7 +113,9 @@ const propsEditors = computed(() => {
 }
 
 .props-editor {
+  
   color: #e0e0e0;
+
 }
 
 .form-item {
@@ -135,4 +140,22 @@ const propsEditors = computed(() => {
   padding: 8px 0;
   
 }
+
+/* 覆盖 Tabs 标签颜色 */
+:deep(.ant-tabs-tab) {
+  color: #d9d9d9 !important;
+}
+:deep( .ant-tabs-tab-active .ant-tabs-tab-btn) {
+  color: #50bcbc !important;
+}
+:deep(.ant-tabs-tab:hover) {
+  color: #5fcadc !important;
+}
+
+/* 可选：调整标签栏背景 */
+:deep(.ant-tabs-nav) {
+  background-color: #393c3b;
+  margin-bottom: 12px;
+}
 </style>
+

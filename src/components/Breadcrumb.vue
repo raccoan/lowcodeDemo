@@ -46,6 +46,8 @@ const getComponentLabel = (comp: any) => {
   padding: 8px 16px;
   background: #fff;
   border-bottom: 1px solid #f0f0f0;
+  
+  border-radius:  8px;
 }
 .current {
   color: #2ecacd;
