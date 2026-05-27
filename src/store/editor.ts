@@ -23,7 +23,27 @@ export const useEditorStore = defineStore('editor', {
         }
       }
       return find(state.components)
+    },
+
+    // 在 getters 内部添加
+    getComponentPath: (state) => (id: string) => {
+      const path: ComponentSchema[] = []
+      const find = (list: ComponentSchema[], ancestors: ComponentSchema[]): boolean => {
+        for (const item of list) {
+          if (item.id === id) {
+            path.push(...ancestors, item)
+            return true
+          }
+          if (item.children?.length) {
+            if (find(item.children, [...ancestors, item])) return true
+          }
+        }
+        return false
+      }
+      find(state.components, [])
+      return path
     }
+
   },
   actions: {
     selectComponent(id: string) {
