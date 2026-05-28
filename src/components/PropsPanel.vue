@@ -14,7 +14,7 @@
           <a-divider />
 
           <!-- 动态生成当前组件类型的特有属性编辑器（配置驱动） -->
-          <template v-for="editor in propsEditors" :key="editor.key">
+          <template v-for="editor in filteredPropsEditors" :key="editor.key">
             <div class="form-item">
               <span>{{ editor.label }}</span>
               <a-input
@@ -22,6 +22,14 @@
                 v-model:value="currentComponent.props[editor.key]"
                 allow-clear
               />
+
+              <a-textarea
+                v-else-if="editor.type === 'textarea'"
+                v-model:value="currentComponent.props[editor.key]"
+                :rows="3"
+                allow-clear
+              />
+
               <a-select
                 v-else-if="editor.type === 'select'"
                 v-model:value="currentComponent.props[editor.key]"
@@ -79,6 +87,25 @@ const propsEditors = computed(() => {
   if (!currentComponent.value) return []
   const meta = componentMetaMap[currentComponent.value.type]
   return meta?.propsEditors || []
+})
+
+// 新增：根据图表类型过滤后的编辑器列表
+const filteredPropsEditors = computed(() => {
+  const editors = propsEditors.value
+  // 非图表组件，不过滤
+  if (currentComponent.value?.type !== 'chart') {
+    return editors
+  }
+  const chartType = currentComponent.value.props?.type || 'line'
+  return editors.filter(editor => {
+    if (editor.key === 'xAxisData' || editor.key === 'seriesData') {
+      return chartType !== 'pie'   // 饼图时隐藏这两个
+    }
+    if (editor.key === 'pieData') {
+      return chartType === 'pie'    // 非饼图时隐藏这个
+    }
+    return true
+  })
 })
 </script>
 
