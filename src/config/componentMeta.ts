@@ -55,25 +55,15 @@ export const componentMetaMap: Record<string, ComponentMeta> = {
     label: '图表',
     propsEditors: [
       {
-        key: 'type',
-        label: '图表类型',
-        type: 'select',
-        options: [
+        key: 'type', label: '图表类型', type: 'select', options: [
           { label: '折线图', value: 'line' },
           { label: '柱状图', value: 'bar' },
           { label: '饼图', value: 'pie' }
         ]
       },
-      {
-        key: 'xAxisData',
-        label: 'X轴数据 (JSON数组)',
-        type: 'textarea',
-      },
-      {
-        key: 'seriesData',
-        label: '系列数据 (JSON数组)',
-        type: 'textarea',
-      }
+      { key: 'xAxisData', label: 'X轴数据 (JSON数组)', type: 'textarea' },
+      { key: 'seriesData', label: '系列数据 (JSON数组)', type: 'textarea' },
+      { key: 'pieData', label: '饼图数据 (JSON数组，格式 [{\"name\":\"A\",\"value\":10}])', type: 'textarea' }
     ]
   }
 }

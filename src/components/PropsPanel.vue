@@ -89,7 +89,18 @@ const activeTab = ref('props')
 const propsEditors = computed(() => {
   if (!currentComponent.value) return []
   const meta = componentMetaMap[currentComponent.value.type]
-  return meta?.propsEditors || []
+  if (!meta) return []
+  let editors = meta.propsEditors || []
+  // 如果是图表组件，根据 type 过滤
+  if (currentComponent.value.type === 'chart') {
+    const chartType = currentComponent.value.props.type
+    if (chartType === 'pie') {
+      editors = editors.filter(editor => editor.key === 'type' || editor.key === 'pieData')
+    } else {
+      editors = editors.filter(editor => editor.key === 'type' || editor.key === 'xAxisData' || editor.key === 'seriesData')
+    }
+  }
+  return editors
 })
 </script>
 

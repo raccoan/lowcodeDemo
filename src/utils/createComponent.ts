@@ -64,12 +64,14 @@ export function createComponent(type: ComponentType): ComponentSchema {
         props: {
           type: 'line',
           xAxisData: JSON.stringify(['周一', '周二', '周三', '周四', '周五']),
-          seriesData: JSON.stringify([120, 200, 150, 80, 70])
+          seriesData: JSON.stringify([120, 200, 150, 80, 70]),
+          pieData: JSON.stringify([
+            { name: '类别A', value: 335 },
+            { name: '类别B', value: 310 },
+            { name: '类别C', value: 234 }
+          ])
         },
-        style: {
-          padding: '0',
-          backgroundColor: '#ffffff'
-        },
+        style: { padding: '0', backgroundColor: '#fff' },
         children: []
       }
     default:

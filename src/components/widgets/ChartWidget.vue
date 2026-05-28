@@ -10,6 +10,7 @@ const props = defineProps<{
   type?: 'line' | 'bar' | 'pie'
   xAxisData?: string   // JSON 字符串，如 '["周一","周二"]'
   seriesData?: string  // JSON 字符串，如 '[120,200]'
+  pieData?: string     // JSON 字符串，如 '[{"name":"类别A","value":335}]'
 }>()
 
 const chartRef = ref<HTMLElement | null>(null)
