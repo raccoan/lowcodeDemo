@@ -62,7 +62,9 @@ export function createComponent(type: ComponentType): ComponentSchema {
         id,
         type: 'chart',
         props: {
-          type: 'line'   // 默认折线图
+          type: 'line',
+          xAxisData: JSON.stringify(['周一', '周二', '周三', '周四', '周五']),
+          seriesData: JSON.stringify([120, 200, 150, 80, 70])
         },
         style: {
           padding: '0',

@@ -3,35 +3,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps<{
   type?: 'line' | 'bar' | 'pie'
+  xAxisData?: string   // JSON 字符串，如 '["周一","周二"]'
+  seriesData?: string  // JSON 字符串，如 '[120,200]'
 }>()
 
 const chartRef = ref<HTMLElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
 
-// 内置示例数据
-const sampleData = {
-  line: {
-    xAxis: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-    series: [120, 200, 150, 80, 70, 110, 130]
-  },
-  bar: {
-    xAxis: ['产品A', '产品B', '产品C', '产品D'],
-    series: [320, 240, 180, 290]
-  },
-  pie: {
-    data: [
-      { name: '类别A', value: 335 },
-      { name: '类别B', value: 310 },
-      { name: '类别C', value: 234 },
-      { name: '类别D', value: 135 }
-    ]
+// 解析 JSON 字符串，安全返回数组
+const parseJsonArray = (str?: string, defaultValue: any[] = []) => {
+  if (!str) return defaultValue
+  try {
+    const parsed = JSON.parse(str)
+    return Array.isArray(parsed) ? parsed : defaultValue
+  } catch {
+    return defaultValue
   }
 }
+
+// 计算属性：x轴数据
+const xAxisDataArray = computed(() => {
+  if (props.type === 'pie') return []
+  return parseJsonArray(props.xAxisData, ['周一', '周二', '周三', '周四', '周五'])
+})
+
+// 计算属性：系列数据
+const seriesDataArray = computed(() => {
+  if (props.type === 'pie') return []
+  return parseJsonArray(props.seriesData, [120, 200, 150, 80, 70])
+})
+
+// 饼图数据（简单示例，也可扩展为可配置）
+const pieData = ref([
+  { name: '类别A', value: 335 },
+  { name: '类别B', value: 310 },
+  { name: '类别C', value: 234 }
+])
 
 const getChartOption = () => {
   if (props.type === 'pie') {
@@ -40,19 +52,18 @@ const getChartOption = () => {
       series: [{
         type: 'pie',
         radius: '50%',
-        data: sampleData.pie.data,
+        data: pieData.value,
         emphasis: { scale: true }
       }]
     }
   } else {
-    const data = props.type === 'line' ? sampleData.line : sampleData.bar
     return {
       tooltip: { trigger: 'axis' },
-      xAxis: { type: 'category', data: data.xAxis },
+      xAxis: { type: 'category', data: xAxisDataArray.value },
       yAxis: { type: 'value' },
       series: [{
         type: props.type,
-        data: data.series,
+        data: seriesDataArray.value,
         smooth: props.type === 'line'
       }]
     }
@@ -67,12 +78,12 @@ const initChart = () => {
   }
 }
 
-// 监听图表类型变化，动态更新图表
-watch(() => props.type, () => {
+// 监听所有相关数据变化，更新图表
+watch([() => props.type, xAxisDataArray, seriesDataArray], () => {
   if (chartInstance) {
     chartInstance.setOption(getChartOption())
   }
-})
+}, { deep: true })
 
 onMounted(() => {
   initChart()

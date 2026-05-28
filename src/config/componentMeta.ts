@@ -4,7 +4,7 @@
 export interface PropEditorConfig {
   key: string
   label: string
-  type: 'input' | 'select' | 'switch' | 'number'
+  type: 'input' | 'select' | 'switch' | 'number' | 'textarea'
   options?: { label: string; value: any }[]
 }
 // ComponentMeta 定义了组件的元信息，包括显示标签、属性编辑器配置和默认样式
@@ -63,6 +63,16 @@ export const componentMetaMap: Record<string, ComponentMeta> = {
           { label: '柱状图', value: 'bar' },
           { label: '饼图', value: 'pie' }
         ]
+      },
+      {
+        key: 'xAxisData',
+        label: 'X轴数据 (JSON数组)',
+        type: 'textarea',
+      },
+      {
+        key: 'seriesData',
+        label: '系列数据 (JSON数组)',
+        type: 'textarea',
       }
     ]
   }
