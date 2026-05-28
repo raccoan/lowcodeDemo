@@ -1,5 +1,5 @@
 <template>
-  <div class="row-widget" @dragover.prevent @drop="onDrop">
+  <div class="row-widget" @dragover="handleDragOver" @drop="onDrop">
     <draggable
       v-model="localChildren"
       item-key="id"
@@ -20,6 +20,7 @@ import type { ComponentSchema } from '../../schema/components'
 import RenderItem from '../RenderItem.vue'
 import { createComponent } from '../../utils/createComponent'
 import { useEditorStore } from '../../store/editor'
+import { useDragDrop } from '../../composables/useDragDrop'
 
 const props = defineProps<{
   style?: Record<string, any>
@@ -31,18 +32,22 @@ const emit = defineEmits<{
 }>()
 
 const editorStore = useEditorStore()
+const { onDragOver, getDragType, clearDragData } = useDragDrop()
 
 const localChildren = computed({
   get: () => props.children || [],
   set: (val) => emit('update:children', val)
 })
 
+const handleDragOver = (e: DragEvent) => {
+  onDragOver(e)
+}
+
 const onDrop = (e: DragEvent) => {
   e.stopPropagation()
-  e.preventDefault()
-  const type = localStorage.getItem('drag-component')
+  const type = getDragType(e)
   if (!type) return
-  localStorage.removeItem('drag-component')
+  clearDragData()
   const component = createComponent(type as any)
   localChildren.value = [...localChildren.value, component]
   setTimeout(() => editorStore.refreshSelectedId(), 0)

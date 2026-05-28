@@ -1,8 +1,9 @@
 <template>
   <div
     class="canvas"
+    :class="{ 'drag-over': isDragging }"
     @click="clearSelected"
-    @dragover.prevent
+    @dragover="handleDragOver"
     @drop="onRootDrop"
   >
     <draggable
@@ -10,7 +11,7 @@
       item-key="id"
       group="components"
       class="root-draggable"
-      @dragover.prevent
+      @dragover="handleDragOver"
       @drop="onDraggableDrop"
     >
       <template #item="{ element }">
@@ -26,17 +27,23 @@ import RenderItem from './RenderItem.vue'
 import { useEditorStore } from '../store/editor'
 import { createComponent } from '../utils/createComponent'
 import type { ComponentType } from '../schema/components'
+import { useDragDrop } from '../composables/useDragDrop'
 
 const editorStore = useEditorStore()
+const { onDragOver, getDragType, clearDragData, isDragging } = useDragDrop()
 
 const clearSelected = () => {
   editorStore.clearSelected()
 }
 
+const handleDragOver = (e: DragEvent) => {
+  onDragOver(e)
+}
+
 const onRootDrop = (e: DragEvent) => {
-  const type = localStorage.getItem('drag-component')
+  const type = getDragType(e)
   if (!type) return
-  localStorage.removeItem('drag-component')
+  clearDragData()
   const component = createComponent(type as ComponentType)
   editorStore.components.push(component)
 }

@@ -6,8 +6,10 @@
       v-for="item in materials"
       :key="item.type"
       class="material-item"
+      :class="{ dragging: isDragging }"
       draggable="true"
-      @dragstart="onDragStart(item)"
+      @dragstart="handleDragStart($event, item)"
+      @dragend="handleDragEnd"
     >
 
       {{ item.label }}
@@ -19,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+import { useDragDrop } from '../composables/useDragDrop'
+
+const { onDragStart, onDragEnd, isDragging } = useDragDrop()
 
 /**
  * 左侧组件库
@@ -42,22 +47,23 @@ const materials = [
   { type: 'chart', label: '图表' }
 
  
+
 ]
 
 /**
  * 开始拖拽
  */
-const onDragStart = (
-  item:any
-) => {
-
-  /**
-   * 保存当前拖拽组件类型
-   */
-  localStorage.setItem(
-    'drag-component',item.type)
+const handleDragStart = (e: DragEvent, item: any) => {
+  const result = onDragStart(item.type)
+  result.setData(e)
   console.log('dragstart type:', item.type)
+}
 
+/**
+ * 拖拽结束
+ */
+const handleDragEnd = () => {
+  onDragEnd()
 }
 
 </script>
