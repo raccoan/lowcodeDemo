@@ -57,6 +57,22 @@ export function createComponent(type: ComponentType): ComponentSchema {
         },
         children: []
       }
+    case 'chart':
+      return {
+        id,
+        type: 'chart',
+        props: {
+          type: 'line',           // 默认折线图
+          xAxisData: ['周一', '周二', '周三', '周四', '周五'],
+          seriesData: [120, 200, 150, 80, 180],
+          data: []               // 饼图用
+        },
+        style: {
+          padding: '0',
+          backgroundColor: '#ffffff'
+        },
+        children: []
+      }
     default:
       throw new Error(`Unknown type: ${type}`)
   }

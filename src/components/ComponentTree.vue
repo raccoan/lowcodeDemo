@@ -54,6 +54,7 @@ const onSelect = (keys: any[]) => {
   }
 }
 
+// 内置自动展开 只需传入需要展开的值
 const expandedKeys = ref<string[]>([])
 const onExpand = (keys: string[]) => {
   expandedKeys.value = keys
@@ -77,7 +78,7 @@ watch(selectedKeys, (newKeys) => {
 }
 .empty-tree {
   text-align: center;
-  color: #999;
+  color: #dfaeae;
   padding: 40px 20px;
 }
 /* 覆盖 a-tree 样式，适配深色背景 */

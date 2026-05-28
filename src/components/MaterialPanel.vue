@@ -39,6 +39,7 @@ const materials = [
     type:'row',
     label:'Row'
   },
+  { type: 'chart', label: '图表' }
 
  
 ]
