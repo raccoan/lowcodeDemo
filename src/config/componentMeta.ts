@@ -50,6 +50,7 @@ export const componentMetaMap: Record<string, ComponentMeta> = {
     label: '列容器',
     propsEditors: []
   },
+  // src/config/componentMeta.ts
   chart: {
     label: '图表',
     propsEditors: [
@@ -62,17 +63,6 @@ export const componentMetaMap: Record<string, ComponentMeta> = {
           { label: '柱状图', value: 'bar' },
           { label: '饼图', value: 'pie' }
         ]
-      },
-      // 注意：数据编辑较复杂，可暂时用简单的 JSON 输入框演示
-      {
-        key: 'xAxisData',
-        label: 'X轴数据 (JSON数组)',
-        type: 'input'
-      },
-      {
-        key: 'seriesData',
-        label: '系列数据 (JSON数组)',
-        type: 'input'
       }
     ]
   }

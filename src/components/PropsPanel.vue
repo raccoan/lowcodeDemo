@@ -33,6 +33,12 @@
                 v-else-if="editor.type === 'switch'"
                 v-model:checked="currentComponent.props[editor.key]"
               />
+              <a-textarea
+                v-else-if="editor.type === 'textarea'"
+                v-model:value="currentComponent.props[editor.key]"
+                :rows="4"
+                allow-clear
+              />
             </div>
           </template>
 

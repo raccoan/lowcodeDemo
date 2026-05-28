@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue'
 
-export type ComponentType = 'button' | 'input' | 'row' | 'col'
+export type ComponentType = 'button' | 'input' | 'row' | 'col' | 'chart'
 
 export interface ComponentStyle extends CSSProperties {
   width?: string
