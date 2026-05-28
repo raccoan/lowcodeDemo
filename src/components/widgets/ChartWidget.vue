@@ -3,69 +3,75 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps<{
   type?: 'line' | 'bar' | 'pie'
-  xAxisData?: string   // JSON 字符串，如 '["周一","周二"]'
-  seriesData?: string  // JSON 字符串，如 '[120,200]'
-  pieData?: string     // JSON 字符串，如 '[{"name":"类别A","value":335}]'
+  xAxisData?: string
+  seriesData?: string
+  pieData?: string
 }>()
 
 const chartRef = ref<HTMLElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
 
-// 解析 JSON 字符串，安全返回数组
-const parseJsonArray = (str?: string, defaultValue: any[] = []) => {
+// 安全解析 JSON
+const parseJson = (str?: string, defaultValue: any = []) => {
   if (!str) return defaultValue
   try {
-    const parsed = JSON.parse(str)
-    return Array.isArray(parsed) ? parsed : defaultValue
+    return JSON.parse(str)
   } catch {
     return defaultValue
   }
 }
 
-// 计算属性：x轴数据
-const xAxisDataArray = computed(() => {
-  if (props.type === 'pie') return []
-  return parseJsonArray(props.xAxisData, ['周一', '周二', '周三', '周四', '周五'])
-})
+// 饼图数据
+const pieDataArray = () => parseJson(props.pieData, [])
 
-// 计算属性：系列数据
-const seriesDataArray = computed(() => {
-  if (props.type === 'pie') return []
-  return parseJsonArray(props.seriesData, [120, 200, 150, 80, 70])
-})
-
-// 饼图数据（简单示例，也可扩展为可配置）
-const pieData = ref([
-  { name: '类别A', value: 335 },
-  { name: '类别B', value: 310 },
-  { name: '类别C', value: 234 }
-])
-
+// 获取图表配置
 const getChartOption = () => {
+  const tooltipCommon = {
+  show: true,
+  backgroundColor: 'transparent',
+  borderColor: '#ccc',
+  borderWidth: 1,
+  textStyle: { color: '#0f0303', fontSize: 11 },
+  padding: [4, 8],
+  extraCssText: 'box-shadow: 0 2px 8px rgba(0,0,0,0.15); max-width: 200px; white-space: normal; word-break: break-word;',
+  // 可选：自定义 formatter 控制显示内容
+  formatter: (params: any) => {
+    if (props.type === 'pie') {
+      return `${params.name}: ${params.value} (${params.percent}%)`
+    } else {
+      return `${params[0].axisValue}<br/>${params[0].seriesName}: ${params[0].value}`
+    }
+  }
+}
+
   if (props.type === 'pie') {
     return {
-      tooltip: { trigger: 'item' },
+      tooltip: { ...tooltipCommon, trigger: 'item' },
       series: [{
         type: 'pie',
         radius: '50%',
-        data: pieData.value,
-        emphasis: { scale: true }
+        data: pieDataArray(),
+        emphasis: { scale: true },
+        label: { show: true, formatter: '{b}: {d}%' }
       }]
     }
   } else {
+    const xData = parseJson(props.xAxisData, [])
+    const sData = parseJson(props.seriesData, [])
     return {
-      tooltip: { trigger: 'axis' },
-      xAxis: { type: 'category', data: xAxisDataArray.value },
+      tooltip: { ...tooltipCommon, trigger: 'axis', axisPointer: { type: 'line' } },
+      xAxis: { type: 'category', data: xData },
       yAxis: { type: 'value' },
       series: [{
         type: props.type,
-        data: seriesDataArray.value,
-        smooth: props.type === 'line'
+        data: sData,
+        smooth: props.type === 'line',
+        itemStyle: { borderRadius: [4,4,0,0] }
       }]
     }
   }
@@ -79,12 +85,16 @@ const initChart = () => {
   }
 }
 
-// 监听所有相关数据变化，更新图表
-watch([() => props.type, xAxisDataArray, seriesDataArray], () => {
-  if (chartInstance) {
-    chartInstance.setOption(getChartOption())
-  }
-}, { deep: true })
+// 监听数据变化，更新图表
+watch(
+  [() => props.type, () => props.xAxisData, () => props.seriesData, () => props.pieData],
+  () => {
+    if (chartInstance) {
+      chartInstance.setOption(getChartOption(), true)
+    }
+  },
+  { deep: true }
+)
 
 onMounted(() => {
   initChart()
