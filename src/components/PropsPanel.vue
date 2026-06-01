@@ -47,9 +47,9 @@
           <h3>样式</h3>
           <!-- 通用样式编辑器：抽离公共样式属性（Padding, Margin, BorderRadius） -->
           <StyleEditor
-            :style="currentComponent.style"
-            @update:style="val => currentComponent.style = val"
-          />
+  :style="currentComponent?.style ?? {}"
+  @update:style="val => { if (currentComponent) currentComponent.style = val }"
+/>
         </div>
         <div v-else class="empty-tab">
           未选中组件，无法编辑属性
