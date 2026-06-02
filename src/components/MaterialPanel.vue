@@ -29,26 +29,17 @@ const { onDragStart, onDragEnd, isDragging } = useDragDrop()
  * 左侧组件库
  */
 const materials = [
-
-  {
-    type:'button',
-    label:'Button'
-  },
-
-  {
-    type:'input',
-    label:'Input'
-  },
-
-  {
-    type:'row',
-    label:'Row'
-  },
-  { type: 'chart', label: '图表' }
-
- 
-
+  { type: 'button', label: 'Button' },
+  { type: 'input', label: 'Input' },
+  { type: 'row', label: 'Row' },
+  { type: 'col', label: 'Col' },
+  { type: 'chart', label: 'Chart' },
+  {type: 'text', label: 'Text' },
+  { type: 'datePicker', label: 'DatePicker' },
+  { type: 'select', label: 'Select' },
+  { type: 'image', label: 'Image' }
 ]
+
 
 /**
  * 开始拖拽

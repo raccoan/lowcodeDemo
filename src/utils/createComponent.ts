@@ -74,6 +74,38 @@ export function createComponent(type: ComponentType): ComponentSchema {
         style: { padding: '0', backgroundColor: '#fff' },
         children: []
       }
+    case 'text':
+      return {
+        id,
+        type: 'text',
+        props: { text: '这是一段文本' },
+        style: {},
+        children: []
+      }
+    case 'datePicker':
+      return {
+        id,
+        type: 'datePicker',
+        props: { showTime: false, picker: 'date' },
+        style: { width: '100%' },
+        children: []
+      }
+    case 'select':
+      return {
+        id,
+        type: 'select',
+        props: { label: '下拉选择', value: 'option1' },
+        style: { margin: '8px 0' },
+        children: []
+      }
+    case 'image':
+      return {
+        id,
+        type: 'image',
+        props: { src: 'https://picsum.photos/200/150', alt: '图片' },
+        style: { width: '200px' },
+        children: []
+      }
     default:
       throw new Error(`Unknown type: ${type}`)
   }

@@ -65,5 +65,45 @@ export const componentMetaMap: Record<string, ComponentMeta> = {
       { key: 'seriesData', label: '系列数据 (JSON数组)', type: 'textarea' },
       { key: 'pieData', label: '饼图数据 (JSON数组，格式 [{\"name\":\"A\",\"value\":10}])', type: 'textarea' }
     ]
+  },
+  text: {
+    label: '文本',
+    propsEditors: [
+      { key: 'text', label: '文本内容', type: 'textarea' }
+    ]
+  },
+  datePicker: {
+    label: '日期选择器',
+    propsEditors: [
+      { key: 'showTime', label: '显示时间', type: 'switch' },
+      {
+        key: 'picker', label: '选择器类型', type: 'select', options: [
+          { label: '日期', value: 'date' },
+          { label: '周', value: 'week' },
+          { label: '月', value: 'month' },
+          { label: '年', value: 'year' }
+        ]
+      }
+    ]
+  },
+  select: {
+    label: '下拉选择器',
+    propsEditors: [
+      { key: 'label', label: '标签文字', type: 'input' },
+      {
+        key: 'value', label: '默认值', type: 'select', options: [
+          { label: '选项1', value: 'option1' },
+          { label: '选项2', value: 'option2' },
+          { label: '选项3', value: 'option3' }
+        ]
+      }
+    ]
+  },
+  image: {
+    label: '图片',
+    propsEditors: [
+      { key: 'src', label: '图片地址', type: 'input' },
+      { key: 'alt', label: '替代文本', type: 'input' }
+    ]
   }
 }
