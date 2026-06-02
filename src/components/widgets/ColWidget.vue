@@ -5,6 +5,7 @@
       item-key="id"
       :group="{ name: 'components', pull: true, put: true }"
       class="col-drag-area"
+      @end="() => editorStore.saveHistory()"
     >
       <template #item="{ element }">
         <RenderItem :item="element" />

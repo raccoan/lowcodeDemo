@@ -1,95 +1,42 @@
 <template>
-
-  <a-layout class="layout">
-
-    <!-- 左侧 -->
-
-    <a-layout-sider
-      width="220"
-      class="left-sider"
-    >
-
+  <a-layout style="height:100vh">
+    <a-layout-sider width="220">
       <MaterialPanel />
-
     </a-layout-sider>
-
-    <!-- 中间 -->
-
-    <a-layout-content
-      class="content"
-    >
-
+    <a-layout-content>
       <CanvasArea />
-
     </a-layout-content>
-
-    <!-- 右侧 -->
-
-    <a-layout-sider
-      width="320"
-      class="right-sider"
-    >
-
+    <a-layout-sider width="320">
       <PropsPanel />
-
     </a-layout-sider>
-
   </a-layout>
-
+  <ContextMenu />
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import MaterialPanel from './components/MaterialPanel.vue'
+import CanvasArea from './components/CanvasArea.vue'
+import PropsPanel from './components/PropsPanel.vue'
+import ContextMenu from './components/ContextMenu.vue'
+import { useEditorStore } from './store/editor'
 
-import MaterialPanel
-from './components/MaterialPanel.vue'
+const editorStore = useEditorStore()
 
-import CanvasArea
-from './components/CanvasArea.vue'
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.ctrlKey && e.key === 'z') {
+    e.preventDefault()
+    editorStore.undo()
+  } else if (e.ctrlKey && e.key === 'y') {
+    e.preventDefault()
+    editorStore.redo()
+  }
+}
 
-import PropsPanel
-from './components/PropsPanel.vue'
-
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 </script>
-
-<style scoped>
-
-.layout {
-
-  height: 100vh;
-
-}
-
-/**
- * 左侧
- */
-.left-sider {
-
-  background: #141414;
-
-  overflow: auto;
-
-}
-
-/**
- * 中间
- */
-.content {
-
-  background: #f0f2f5;
-
-  overflow: auto;
-
-}
-
-/**
- * 右侧
- */
-.right-sider {
-
-  background: #1f1f1f;
-
-  overflow: auto;
-
-}
-
-</style>

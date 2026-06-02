@@ -1,19 +1,9 @@
 <template>
-  <div
-    class="canvas"
-    :class="{ 'drag-over': isDragging }"
-    @click="clearSelected"
-    @dragover="handleDragOver"
-    @drop="onRootDrop"
-  >
-    <draggable
-      v-model="editorStore.components"
-      item-key="id"
-      group="components"
-      class="root-draggable"
-      @dragover="handleDragOver"
-      @drop="onDraggableDrop"
-    >
+  <div class="canvas" :class="{ 'drag-over': isDragging }" @click="clearSelected" @dragover="handleDragOver"
+    @drop="onRootDrop" @contextmenu.prevent="onCanvasContextMenu">
+    <draggable v-model="editorStore.components" item-key="id" group="components" class="root-draggable"
+      @dragover="handleDragOver" @drop="onDraggableDrop" @end="() => editorStore.saveHistory()"
+      @contextmenu.prevent="onCanvasContextMenu">
       <template #item="{ element }">
         <RenderItem :item="element" />
       </template>
@@ -51,6 +41,13 @@ const onRootDrop = (e: DragEvent) => {
 const onDraggableDrop = (e: DragEvent) => {
   e.stopPropagation()
 }
+
+const onCanvasContextMenu = (e: MouseEvent) => {
+  // 调用全局右键菜单，不传递组件 id（表示空白区域）
+  if ((window as any).__contextMenu) {
+    (window as any).__contextMenu(e)
+  }
+}
 </script>
 
 <style scoped>
@@ -59,6 +56,7 @@ const onDraggableDrop = (e: DragEvent) => {
   padding: 24px;
   background: #f0f2f5;
 }
+
 .root-draggable {
   min-height: 100%;
 }

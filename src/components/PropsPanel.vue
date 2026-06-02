@@ -21,6 +21,7 @@
                 v-if="editor.type === 'input'"
                 v-model:value="currentComponent.props[editor.key]"
                 allow-clear
+                @blur="editorStore.saveHistory"
               />
 
               <a-textarea
