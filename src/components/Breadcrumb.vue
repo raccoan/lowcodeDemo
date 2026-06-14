@@ -35,7 +35,12 @@ const getComponentLabel = (comp: any) => {
     button: '按钮',
     input: '输入框',
     row: '行容器',
-    col: '列容器'
+    col: '列容器',
+    chart: '图表',
+    text: '文本',
+    datePicker: '日期选择器',
+    select: '下拉选择器',
+    image: '图片'
   }
   return typeMap[comp.type] || comp.type
 }

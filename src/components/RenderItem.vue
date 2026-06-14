@@ -1,14 +1,15 @@
 <template>
-  <div class="render-item" :class="{ active: editorStore.selectedId === item.id }" @click.stop="select"
+  <div class="render-item" :class="{ active: isSelected }" @click.stop="select"
     @contextmenu.prevent="showContextMenu">
-    <component :is="registry[item.type]" v-if="item.type === 'row' || item.type === 'col'"
-      v-model:children="item.children" v-bind="item.props" :style="item.style" />
-    <component class="node" v-else :is="registry[item.type]" v-bind="item.props" :style="item.style"
+    <component :is="registry[item.type]" v-if="isContainer"
+      v-model:children="item.children" v-bind="item.props" :style="computedStyle" />
+    <component class="node" v-else :is="registry[item.type]" v-bind="item.props" :style="computedStyle"
       @update:value="handleValueUpdate" @update:label="handleLabelUpdate" @update:text="handleTextUpdate" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { ComponentSchema } from '../schema/components'
 import { useEditorStore } from '../store/editor'
 import { registry } from '../renderer/registry'
@@ -17,6 +18,30 @@ defineOptions({ name: 'RenderItem' })
 
 const props = defineProps<{ item: ComponentSchema }>()
 const editorStore = useEditorStore()
+
+// 计算属性：判断是否为容器组件
+const isContainer = computed(() => {
+  return props.item.type === 'row' || props.item.type === 'col'
+})
+
+// 计算属性：判断是否被选中（缓存选中状态）
+const isSelected = computed(() => {
+  return editorStore.selectedId === props.item.id
+})
+
+// 计算属性：缓存样式计算结果，避免重复计算
+const computedStyle = computed(() => {
+  const baseStyle = props.item.style || {}
+  // 如果是容器组件，确保有必要的布局样式
+  if (isContainer.value) {
+    return {
+      display: 'flex',
+      minHeight: '100px',
+      ...baseStyle
+    }
+  }
+  return baseStyle
+})
 
 const select = () => {
   editorStore.selectComponent(props.item.id)

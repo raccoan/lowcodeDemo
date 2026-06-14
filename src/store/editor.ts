@@ -1,6 +1,6 @@
 // src/store/editor.ts
 import { defineStore } from 'pinia'
-import type { ComponentSchema, ComponentType } from '../schema/components'
+import type { ComponentSchema } from '../schema/components'
 import { deepClone } from '../utils/deepClone'
 
 interface EditorState {
