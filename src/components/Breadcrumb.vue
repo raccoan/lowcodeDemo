@@ -1,12 +1,8 @@
 <template>
   <div class="breadcrumb">
     <a-breadcrumb>
-      <a-breadcrumb-item
-        v-for="(comp, index) in path"
-        :key="comp.id"
-        @click="select(comp.id)"
-        :class="{ 'current': index === path.length - 1 }"
-      >
+      <a-breadcrumb-item v-for="(comp, index) in path" :key="comp.id" @click="select(comp.id)"
+        :class="{ 'current': index === path.length - 1 }">
         {{ getComponentLabel(comp) }}
       </a-breadcrumb-item>
     </a-breadcrumb>
@@ -49,15 +45,12 @@ const getComponentLabel = (comp: any) => {
 <style scoped>
 .breadcrumb {
   padding: 8px 16px;
-  background: #fff;
-  border-bottom: 1px solid #f0f0f0;
-  
-  border-radius:  8px;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+
 .current {
   color: #2ecacd;
   font-weight: 500;
 }
-
-
 </style>
